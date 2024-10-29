@@ -17,8 +17,8 @@ export class ProductController {
 
     createProduct = async (req: Request, res: Response) => {
         try {
-            await this.productService.createProduct(req.body);
-            res.status(201).json({ message: 'Product creation initiated' });
+            const product = await this.productService.createProduct(req.body);
+            res.status(201).json({ product });
         } catch (error) {
             this.handleErrors(error, res);
         }
