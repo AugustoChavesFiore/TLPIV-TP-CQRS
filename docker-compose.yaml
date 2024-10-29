@@ -1,4 +1,17 @@
 services:
+  nginx:
+    image: nginx
+    container_name: nginx
+    depends_on:
+      - commandapp
+      - querysapp
+    ports:
+      - "80:80"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    networks:
+      - rabbitmq_network
+
   rabbitmq:
     image: rabbitmq:3-management
     container_name: rabbitmq
@@ -21,8 +34,8 @@ services:
     image: command-docker
     container_name: CQRS-command
     restart: always
-    ports:
-      - "${PORT}:${PORT}"
+    expose:
+      - "${PORT}"
     environment:
       PORT: ${PORT}
       MONGO_URL: ${MONGO_URL}
@@ -41,8 +54,8 @@ services:
     image: querys-docker
     container_name: CQRS-querys
     restart: always
-    ports:
-      - "${PORT_QUERY}:${PORT_QUERY}"
+    expose:
+      - "${PORT_QUERY}"
     environment:
       PORT_QUERY: ${PORT_QUERY}
       MONGO_URL_QUERY: ${MONGO_URL_QUERY}
