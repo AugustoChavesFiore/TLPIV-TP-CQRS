@@ -37,5 +37,3 @@ Se han creado dos APIs separadas para manejar las operaciones de comandos (escri
 
 - Asegúrate de que Docker Desktop esté en ejecución antes de ejecutar el comando.
 - Verifica que las variables de entorno en los archivos `.env` estén configuradas correctamente.
-
-Con estos cambios, las instrucciones deberían ser más claras y fáciles de seguir.
