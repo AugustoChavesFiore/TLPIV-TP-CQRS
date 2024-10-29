@@ -1,0 +1,71 @@
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+    environment:
+      RABBITMQ_DEFAULT_USER: user
+      RABBITMQ_DEFAULT_PASS: password
+    networks:
+      - rabbitmq_network
+
+  commandapp:
+    depends_on:
+      - db-app
+      - rabbitmq
+    build:
+      dockerfile: Dockerfile
+      context: ./backend
+    image: command-docker
+    container_name: CQRS-command
+    restart: always
+    ports:
+      - "${PORT}:${PORT}"
+    environment:
+      PORT: ${PORT}
+      MONGO_URL: ${MONGO_URL}
+      DB_NAME: ${DB_NAME}
+      RABBITMQ_URL: ${RABBITMQ_URL}
+    networks:
+      - rabbitmq_network
+
+  querysapp:
+    depends_on:
+      - db-app
+      - rabbitmq
+    build:
+      dockerfile: Dockerfile
+      context: ./backend_querys
+    image: querys-docker
+    container_name: CQRS-querys
+    restart: always
+    ports:
+      - "${PORT_QUERY}:${PORT_QUERY}"
+    environment:
+      PORT_QUERY: ${PORT_QUERY}
+      MONGO_URL_QUERY: ${MONGO_URL_QUERY}
+      DB_NAME_QUERY: ${DB_NAME_QUERY}
+      RABBITMQ_URL: ${RABBITMQ_URL}
+    networks:
+      - rabbitmq_network
+
+  db-app:
+    depends_on:
+      - rabbitmq
+    image: mongo
+    container_name: mongo-app
+    restart: always
+    ports:
+      - 27017:27017
+    environment:
+      MONGODB_DATABASE: db-app
+    volumes:
+      - ./mongo:/data/db
+    networks:
+      - rabbitmq_network
+
+networks:
+  rabbitmq_network:
+    driver: bridge
