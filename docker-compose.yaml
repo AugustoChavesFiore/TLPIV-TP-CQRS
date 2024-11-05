@@ -2,9 +2,11 @@ services:
   nginx:
     image: nginx
     container_name: nginx
+    restart: always
     depends_on:
       - commandapp
       - querysapp
+      - front
     ports:
       - "80:80"
     volumes:
@@ -26,7 +28,7 @@ services:
 
   commandapp:
     depends_on:
-      - db-app
+      - db-command
       - rabbitmq
     build:
       dockerfile: Dockerfile
@@ -38,8 +40,12 @@ services:
       - "${PORT}"
     environment:
       PORT: ${PORT}
-      MONGO_URL: ${MONGO_URL}
       DB_NAME: ${DB_NAME}
+      DB_USER: ${DB_USER}
+      DB_PASSWORD: ${DB_PASSWORD}
+      DB_HOST: ${DB_HOST}
+      DB_PORT: ${DB_PORT}
+      DB_DIALECT: ${DB_DIALECT}
       RABBITMQ_URL: ${RABBITMQ_URL}
     networks:
       - rabbitmq_network
@@ -63,6 +69,22 @@ services:
       RABBITMQ_URL: ${RABBITMQ_URL}
     networks:
       - rabbitmq_network
+      
+  front:
+    depends_on:
+      - commandapp
+      - querysapp
+    build:
+      context: ./cqrs-frontend
+      dockerfile: Dockerfile
+    image: front-docker
+    container_name: front-CQRS
+    networks:
+      - rabbitmq_network
+    expose:
+      - 3000
+    environment:
+      - VITE_API_URL=${VITE_API_URL}
 
   db-app:
     depends_on:
@@ -76,6 +98,36 @@ services:
       MONGODB_DATABASE: db-app
     volumes:
       - ./mongo:/data/db
+    networks:
+      - rabbitmq_network
+
+  db-command:
+    depends_on:
+      - rabbitmq
+    container_name: ${DB_NAME}
+    image: postgres
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      POSTGRES_DB: ${DB_NAME}
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+    networks:
+      - rabbitmq_network
+
+  pgAdmin:
+    depends_on:
+      - db-command
+    image: dpage/pgadmin4
+    volumes:
+      - ./pgadmin:/var/lib/pgadmin
+    ports:
+      - "8080:8000"
+    environment:
+      - PGADMIN_DEFAULT_PASSWORD=123456
+      - PGADMIN_DEFAULT_EMAIL=admin@google.com
+    restart: always
     networks:
       - rabbitmq_network
 
