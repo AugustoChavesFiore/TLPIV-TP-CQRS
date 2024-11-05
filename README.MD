@@ -1,5 +1,6 @@
 # Trabajo Practico de Arquitectura CQRS
 
+
 Este proyecto implementa una arquitectura CQRS (Command Query Responsibility Segregation) para demostrar cómo se puede separar las operaciones de lectura y escritura en un sistema. La arquitectura CQRS permite escalar y optimizar las operaciones de lectura y escritura de manera independiente, mejorando así el rendimiento y la mantenibilidad del sistema.
 
 ## Tecnologías Utilizadas
@@ -14,6 +15,9 @@ Este proyecto implementa una arquitectura CQRS (Command Query Responsibility Seg
 El proyecto es agnóstico al CRUD de productos, lo que significa que la arquitectura CQRS implementada puede ser aplicada a cualquier otro dominio o entidad. En este caso, se ha utilizado un CRUD de productos como ejemplo para demostrar cómo funciona la arquitectura.
 
 Se han creado dos APIs separadas para manejar las operaciones de comandos (escritura) y consultas (lectura), siguiendo los principios de la arquitectura CQRS.
+
+<img src='./nueva_estructura_white.svg'/> 
+
 
 ## Pasos para ejecutar el proyecto
 
