@@ -24,10 +24,15 @@ Se han creado dos APIs separadas para manejar las operaciones de comandos (escri
 ```bash
     git https://github.com/AugustoChavesFiore/TLPIV-TP-CQRS.git
 ```
+2. Clonar repositorio de Frontend
 
-2. renombrar el `env.template` a `env` (cambiar variables si lo desea)
+```bash
+    git https://github.com/leonardotaquini/cqrs-frontend.git
+```
 
-3. ejecutar el comando desde el directorio raiz
+3. renombrar el `env.template` a `env` (cambiar variables si lo desea)
+
+4. ejecutar el comando desde el directorio raiz
 
 ```bash
     docker compose --env-file ./backend/.env  --env-file ./backend_querys/.env  --env-file ./cqrs-frontend/.env up --build -d
