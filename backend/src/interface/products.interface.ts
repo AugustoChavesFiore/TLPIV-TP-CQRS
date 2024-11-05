@@ -1,7 +1,9 @@
+import { Optional } from "sequelize";
 
 
 export interface IProduct {
-    id: string;
+    id?: string;
+    _id?: string;
     name: string;
     price: number;
     description: string;
@@ -15,3 +17,4 @@ export interface IProductService {
     deleteProduct: (id: string) => Promise<void>;
 };
 
+export interface IProductCreate extends Optional<IProduct, 'id'> { };

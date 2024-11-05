@@ -30,6 +30,7 @@ export class RabbitMQSubscriber {
     private async handleEvent(eventType: string, data: any) {
         switch (eventType) {
             case 'product.created':
+                console.log(data);
                 await this.productService.createProduct(data);
                 break;
             case 'product.updated':

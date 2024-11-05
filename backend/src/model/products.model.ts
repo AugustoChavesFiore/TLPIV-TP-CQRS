@@ -1,26 +1,27 @@
-import { Schema, model } from "mongoose";
-import { IProduct } from "../interface/products.interface";
+import { Table, Column, Model, Default, PrimaryKey, DataType } from 'sequelize-typescript';
+import { IProductCreate, IProduct } from "../interface/products.interface";
 
-
-export const ProductSchema = new Schema<IProduct>({
-    name: {
-        type: String,
-        required: true
-    },
-    price: {
-        type: Number,
-        required: true
-    },
-    description: {
-        type: String,
-        required: true
-    },
-    quantity: {
-        type: Number,
-        required: true
-    }
-}, {
+@Table({
+    tableName: 'products',
     timestamps: true
-});
+})
+export default class ProductModel extends Model<IProduct, IProductCreate> {
+    @PrimaryKey
+    @Default(DataType.UUIDV4)
+    @Column({
+        type: DataType.UUID,
+        field: "id"
+    })
+    declare id: string;
+    @Column
+    declare name: string;
 
-export const ProductModel = model("Product", ProductSchema);
+    @Column
+    declare price: number;
+
+    @Column
+    declare description: string;
+
+    @Column
+    declare quantity: number;
+};

@@ -9,10 +9,9 @@ import { RabbitMQPublisher } from "./config/rabbitmq";
 
 (
     async () => {
-        const db = new DB({
-            mongoUrl: enviroments.MONGO_URL!,
-            dbName: enviroments.DB_NAME!
-        });
+        const db = DB.getInstance(enviroments.DB);
+
+        db.sync();
         const server = new Server({
             port: enviroments.PORT,
             routes: AppRouter.routes

@@ -21,6 +21,7 @@ export class ProductsService implements IProductService {
     };
 
     async createProduct(product: IProduct): Promise<IProduct> {
+  
         const newProduct = new ProductModel(product);
         await newProduct.save();
         return newProduct;

@@ -6,6 +6,7 @@ export class ProductController {
     constructor(private productService: IProductService) { }
 
     handleErrors(error: any, res: Response) {
+        console.error({error});
         if (error.code === 11000) return res.status(409).json({ error: 'Resource already exists' });
 
         if (error instanceof CustomError) {
