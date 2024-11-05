@@ -3,3 +3,4 @@ mongo
 .env
 node_modules
 Arquitectura CQRS.pdf
+pgadmin
