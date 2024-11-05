@@ -30,7 +30,7 @@ Se han creado dos APIs separadas para manejar las operaciones de comandos (escri
 3. ejecutar el comando desde el directorio raiz
 
 ```bash
-    docker compose --env-file ./backend/.env  --env-file ./backend_querys/.env up --build -d
+    docker compose --env-file ./backend/.env  --env-file ./backend_querys/.env  --env-file ./cqrs-frontend/.env up --build -d
 ```
 
 ### Notas adicionales:
